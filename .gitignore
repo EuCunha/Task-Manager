@@ -7,9 +7,6 @@ __pycache__/
 *.py[cod]
 *$py.class
 
-# Personal Files
-/tasks.json
-
 # C extensions
 *.so
 
