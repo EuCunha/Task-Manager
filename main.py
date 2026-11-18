@@ -11,19 +11,26 @@ def main(file, tasks) -> None:
     ui.menu()
 
     while True:
-        menu_choice = input("Enter a option: ").strip()
+        menu_choice = ui.get_input()
 
         if menu_choice == '4':
             break
         elif menu_choice == '1':
             ui.view(tasks)
         elif menu_choice == '2':
-            new_task = input("Enter a task: ").strip()
-            op.add(tasks, new_task)
+            new_task = ui.get_input("Enter a task")
+            add_task = op.add(tasks, new_task)
+            ui.show_message(add_task)
             storage.save(file, tasks)
         elif menu_choice == '3':
-            op.handle_delete(tasks)
-            storage.save(file, tasks)
+            if tasks:
+                delete_choice = ui.get_task_choice(tasks)
+                if delete_choice is not None:
+                    deleted = op.delete(tasks, delete_choice)
+                    ui.show_message(f'"{deleted}" was removed.')
+                    storage.save(file, tasks)
+            else: print("Current list is empty.")
+
         else: print("Not an option.")
 
 
