@@ -11,7 +11,7 @@ def menu():
 def view(tasks: list) -> None:
     if tasks:
         for i, task in enumerate(tasks, start=1):
-            print(f'{i} -> {task}')
+            print(f'{i}.. {task}')
     else:
         print("Current list is empty") 
 

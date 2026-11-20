@@ -12,5 +12,11 @@ def add(tasks: list, task: str) -> str:
 def complete():
     pass
 
-def delete(tasks: list, option: int) -> str:
-        return tasks.pop(option - 1)    
+## TODO
+def delete(tasks: list, option: str) -> str:
+    # if option.isdigit():
+    #     index = int(option)
+    return tasks.pop(option - 1)
+    # if option in tasks:
+    #     removed = tasks.remove(option)
+    #     return removed
