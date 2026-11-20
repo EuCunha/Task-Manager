@@ -11,7 +11,7 @@ def menu():
 def view(tasks: list) -> None:
     if tasks:
         for i, task in enumerate(tasks, start=1):
-            print(f'{i}.. {task}')
+            print(f'{i}. {task.capitalize()}')
     else:
         print("Current list is empty") 
 
@@ -20,19 +20,25 @@ def get_input(prompt: str = "") -> str:
         return input(f"{prompt}: ").strip()
     else: return input(">> ").strip()
 
-def get_task_choice(tasks) -> int | None:
+## TODO: see what I can do later to improve this logic
+def get_task_choice(tasks) -> str | None:
     choice = get_input("Choose a task")
-    if choice.isdigit():
-        choice_num = int(choice)
-    else:
-        print("Must be a number.")
-        return  
+    if choice:
+        if choice.isdigit():
+            if 1 <= int(choice) <= len(tasks):
+                return choice
+            elif choice in tasks:
+                return choice
+            else:
+                print(f'"{choice}" index out of range.')
+                return
+        elif choice and choice not in tasks:
+            print(f'"{choice}" not in tasks list.')
+            return
+
+        return choice
+    print("Choice can't be empty.")
         
-    if 1 <= choice_num <= len(tasks):
-        return choice_num
-    else: 
-        print("Invalid input.")
-        return
 
 def show_message(arg):
     print(arg)

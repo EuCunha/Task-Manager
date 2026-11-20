@@ -3,7 +3,7 @@
 
 def add(tasks: list, task: str) -> str:
     if task:
-        new_task = task.capitalize()
+        new_task = task
         tasks.append(new_task)
         return "Task added."
     else:
@@ -14,9 +14,11 @@ def complete():
 
 ## TODO
 def delete(tasks: list, option: str) -> str:
-    # if option.isdigit():
-    #     index = int(option)
-    return tasks.pop(option - 1)
-    # if option in tasks:
-    #     removed = tasks.remove(option)
-    #     return removed
+    if option.isdigit():
+        index = int(option)
+        if not index > len(tasks):
+            removed = tasks.pop(index - 1)
+            return f'"{removed}" was removed.'
+    if option in tasks:
+        tasks.remove(option)
+        return f'"{option}" was removed.'

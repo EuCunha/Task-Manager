@@ -1,12 +1,12 @@
 from argparse import ArgumentParser, Namespace
+import src.operations as operations
 
 # HANDLERS - ADD | DEL | VIEW
-# TODO: Implement file parameter and set comunication with operations.py
-def handle_add(argument: Namespace, array: list):
-    return array.append(argument)
+def handle_add(array: list, argument: str):
+    return operations.add(array,argument)
 
-def handle_delete():
-    pass
+def handle_delete(array, argument):
+    return operations.delete(array, argument)
 
 def handle_view(argument: str, array: list):
     if argument and argument.isdigit():
@@ -33,7 +33,7 @@ def build_parser():
         help='Creates and add task to the database.',
         epilog='Example: py <filename>.py add "task"'
     )
-    create.add_argument('task', help='Description of the task to be created.')
+    create.add_argument('task', type=str, help='Description of the task to be created.')
 
     remove = subparser.add_parser(
         name='remove',
@@ -41,15 +41,15 @@ def build_parser():
         help='Delete selected task from the database.',
         epilog='Example: py <filename>.py del ("task" or Index)'
     )
-    remove.add_argument('task', help='Description of the task to be deleted.')
+    remove.add_argument('task', type=str, help='Description of the task to be deleted.')
     
     view = subparser.add_parser(
         name='list',
         aliases=['view'],
-        help='Display all the tasks (if no parameter given).',
+        help='Display all the tasks (if no parameter(index) given).',
         epilog='Example: py <filename>.py list (index)'
     )
-    view.add_argument('-i','--index', help='Index of the task to be displayed.')
+    view.add_argument('-i','--index', type=int, help='Index of the task to be displayed.')
 
     subparser.add_parser(
         name='clear',
@@ -65,15 +65,17 @@ def run(array: list):
     args: Namespace = build_parser()
     print(args)
 
-    if args.cmd:
-        if args.cmd in ('add', 'create'):
-            handle_add(args.task, array)
-        if args.cmd in ('remove', 'del', 'rm'):
-            pass
-        if args.cmd in ('list', 'view'):
-            handle_view(args.index, array)
-        if args.cmd in ('clear'):
+    if not args.cmd:
+        return 0
+    if args.cmd in ('add', 'create'):
+        handle_add(array, args.task)
+    if args.cmd in ('remove', 'del', 'rm'):
+        handle_delete(array, args.task)
+    if args.cmd in ('list', 'view'):
+        handle_view(args.index, array)
+    if args.cmd in ('clear'):
             array.clear()
+    return 1
 
 
 if __name__ == "__main__":
